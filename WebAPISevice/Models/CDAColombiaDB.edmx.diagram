@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a05d1744948c461091da924af98da6e5" Name="Diagram1">
+        <EntityTypeShape EntityType="CDAColombiaDBModel.Cliente" Width="1.5" PointX="0.5" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="CDAColombiaDBModel.Mecanico" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CDAColombiaDBModel.Repuesto" Width="1.5" PointX="7.375" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="CDAColombiaDBModel.Servicio" Width="1.5" PointX="4.625" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="CDAColombiaDBModel.sysdiagrams" Width="1.5" PointX="2.5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CDAColombiaDBModel.Vehiculo" Width="1.5" PointX="0.5" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="CDAColombiaDBModel.FK_Servicio_Cliente" ManuallyRouted="false" />
+        <AssociationConnector Association="CDAColombiaDBModel.FK_Vehiculo_Cliente" ManuallyRouted="false" />
+        <AssociationConnector Association="CDAColombiaDBModel.FK_Mecanico_Vehiculo" ManuallyRouted="false" />
+        <AssociationConnector Association="CDAColombiaDBModel.FK_Servicio_Mecanico" ManuallyRouted="false" />
+        <AssociationConnector Association="CDAColombiaDBModel.FK_Repuesto_Vehiculo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CDAColombiaDBModel.Factura" Width="1.5" PointX="7" PointY="7.5" />
+        <AssociationConnector Association="CDAColombiaDBModel.FK_Factura_Cliente" />
+        <AssociationConnector Association="CDAColombiaDBModel.FK_Factura_Mecanico" />
+        <AssociationConnector Association="CDAColombiaDBModel.FK_Factura_Repuesto" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

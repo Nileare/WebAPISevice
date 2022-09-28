@@ -1,0 +1,563 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CDAColombiaDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="IDCLIENTE" />
+          </Key>
+          <Property Name="IDCLIENTE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="APELLIDO" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CEDULA" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="TELEFONO" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="IDFACTURA" />
+          </Key>
+          <Property Name="IDFACTURA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NUMERO_FACTURA" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="IVA" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="IDCLIENTE" Type="int" Nullable="false" />
+          <Property Name="IDMECANICO" Type="int" Nullable="false" />
+          <Property Name="IDREPUESTO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mecanico">
+          <Key>
+            <PropertyRef Name="IDMECANICO" />
+          </Key>
+          <Property Name="IDMECANICO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="APELLIDO" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="EVALUACION_DAÑOS" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="TIEMPO_REPARACION" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="MANO_DE_OBRA" Type="money" Nullable="false" />
+          <Property Name="IDVEHICULO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Repuesto">
+          <Key>
+            <PropertyRef Name="IDREPUESTO" />
+          </Key>
+          <Property Name="IDREPUESTO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PRECIO" Type="money" Nullable="false" />
+          <Property Name="FECHA_ENTREGA" Type="date" Nullable="false" />
+          <Property Name="IDVEHICULO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Servicio">
+          <Key>
+            <PropertyRef Name="IDSERVICIO" />
+          </Key>
+          <Property Name="IDSERVICIO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FECHA_CITA" Type="date" Nullable="false" />
+          <Property Name="FOTO" Type="varbinary(max)" Nullable="false" />
+          <Property Name="IDCLIENTE" Type="int" Nullable="false" />
+          <Property Name="IDMECANICO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="IDVEHICULO" />
+          </Key>
+          <Property Name="IDVEHICULO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MODELO" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="COLOR" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="AÑO" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="PLACA" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="IDCLIENTE" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Factura_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IDCLIENTE" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="IDCLIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Factura_Mecanico">
+          <End Role="Mecanico" Type="Self.Mecanico" Multiplicity="1" />
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mecanico">
+              <PropertyRef Name="IDMECANICO" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="IDMECANICO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Factura_Repuesto">
+          <End Role="Repuesto" Type="Self.Repuesto" Multiplicity="1" />
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Repuesto">
+              <PropertyRef Name="IDREPUESTO" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="IDREPUESTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mecanico_Vehiculo">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="1" />
+          <End Role="Mecanico" Type="Self.Mecanico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="IDVEHICULO" />
+            </Principal>
+            <Dependent Role="Mecanico">
+              <PropertyRef Name="IDVEHICULO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Repuesto_Vehiculo">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="1" />
+          <End Role="Repuesto" Type="Self.Repuesto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="IDVEHICULO" />
+            </Principal>
+            <Dependent Role="Repuesto">
+              <PropertyRef Name="IDVEHICULO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicio_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IDCLIENTE" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="IDCLIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicio_Mecanico">
+          <End Role="Mecanico" Type="Self.Mecanico" Multiplicity="1" />
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mecanico">
+              <PropertyRef Name="IDMECANICO" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="IDMECANICO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehiculo_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IDCLIENTE" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="IDCLIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CDAColombiaDBModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Factura" EntityType="Self.Factura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mecanico" EntityType="Self.Mecanico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Repuesto" EntityType="Self.Repuesto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Servicio" EntityType="Self.Servicio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehiculo" EntityType="Self.Vehiculo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Factura_Cliente" Association="Self.FK_Factura_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Factura_Mecanico" Association="Self.FK_Factura_Mecanico">
+            <End Role="Mecanico" EntitySet="Mecanico" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Factura_Repuesto" Association="Self.FK_Factura_Repuesto">
+            <End Role="Repuesto" EntitySet="Repuesto" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mecanico_Vehiculo" Association="Self.FK_Mecanico_Vehiculo">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="Mecanico" EntitySet="Mecanico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Repuesto_Vehiculo" Association="Self.FK_Repuesto_Vehiculo">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="Repuesto" EntitySet="Repuesto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_Cliente" Association="Self.FK_Servicio_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_Mecanico" Association="Self.FK_Servicio_Mecanico">
+            <End Role="Mecanico" EntitySet="Mecanico" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehiculo_Cliente" Association="Self.FK_Vehiculo_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CDAColombiaDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="IDCLIENTE" />
+          </Key>
+          <Property Name="IDCLIENTE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="APELLIDO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CEDULA" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TELEFONO" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CIUDAD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Servicio" Relationship="Self.FK_Servicio_Cliente" FromRole="Cliente" ToRole="Servicio" />
+          <NavigationProperty Name="Vehiculo" Relationship="Self.FK_Vehiculo_Cliente" FromRole="Cliente" ToRole="Vehiculo" />
+          <NavigationProperty Name="Factura" Relationship="CDAColombiaDBModel.FK_Factura_Cliente" FromRole="Cliente" ToRole="Factura" />
+        </EntityType>
+        <EntityType Name="Mecanico">
+          <Key>
+            <PropertyRef Name="IDMECANICO" />
+          </Key>
+          <Property Name="IDMECANICO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="APELLIDO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="EVALUACION_DAÑOS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TIEMPO_REPARACION" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MANO_DE_OBRA" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="IDVEHICULO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Vehiculo" Relationship="Self.FK_Mecanico_Vehiculo" FromRole="Mecanico" ToRole="Vehiculo" />
+          <NavigationProperty Name="Servicio" Relationship="Self.FK_Servicio_Mecanico" FromRole="Mecanico" ToRole="Servicio" />
+          <NavigationProperty Name="Factura" Relationship="CDAColombiaDBModel.FK_Factura_Mecanico" FromRole="Mecanico" ToRole="Factura" />
+        </EntityType>
+        <EntityType Name="Repuesto">
+          <Key>
+            <PropertyRef Name="IDREPUESTO" />
+          </Key>
+          <Property Name="IDREPUESTO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PRECIO" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="FECHA_ENTREGA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IDVEHICULO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Vehiculo" Relationship="Self.FK_Repuesto_Vehiculo" FromRole="Repuesto" ToRole="Vehiculo" />
+          <NavigationProperty Name="Factura" Relationship="CDAColombiaDBModel.FK_Factura_Repuesto" FromRole="Repuesto" ToRole="Factura" />
+        </EntityType>
+        <EntityType Name="Servicio">
+          <Key>
+            <PropertyRef Name="IDSERVICIO" />
+          </Key>
+          <Property Name="IDSERVICIO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FECHA_CITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FOTO" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="IDCLIENTE" Type="Int32" Nullable="false" />
+          <Property Name="IDMECANICO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Servicio_Cliente" FromRole="Servicio" ToRole="Cliente" />
+          <NavigationProperty Name="Mecanico" Relationship="Self.FK_Servicio_Mecanico" FromRole="Servicio" ToRole="Mecanico" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="IDVEHICULO" />
+          </Key>
+          <Property Name="IDVEHICULO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MODELO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="COLOR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="AÑO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="PLACA" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="IDCLIENTE" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Vehiculo_Cliente" FromRole="Vehiculo" ToRole="Cliente" />
+          <NavigationProperty Name="Mecanico" Relationship="Self.FK_Mecanico_Vehiculo" FromRole="Vehiculo" ToRole="Mecanico" />
+          <NavigationProperty Name="Repuesto" Relationship="Self.FK_Repuesto_Vehiculo" FromRole="Vehiculo" ToRole="Repuesto" />
+        </EntityType>
+        <Association Name="FK_Servicio_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IDCLIENTE" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="IDCLIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehiculo_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IDCLIENTE" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="IDCLIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mecanico_Vehiculo">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="1" />
+          <End Role="Mecanico" Type="Self.Mecanico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="IDVEHICULO" />
+            </Principal>
+            <Dependent Role="Mecanico">
+              <PropertyRef Name="IDVEHICULO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicio_Mecanico">
+          <End Role="Mecanico" Type="Self.Mecanico" Multiplicity="1" />
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mecanico">
+              <PropertyRef Name="IDMECANICO" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="IDMECANICO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Repuesto_Vehiculo">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="1" />
+          <End Role="Repuesto" Type="Self.Repuesto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="IDVEHICULO" />
+            </Principal>
+            <Dependent Role="Repuesto">
+              <PropertyRef Name="IDVEHICULO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CDAColombiaDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="Mecanico" EntityType="Self.Mecanico" />
+          <EntitySet Name="Repuesto" EntityType="Self.Repuesto" />
+          <EntitySet Name="Servicio" EntityType="Self.Servicio" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Vehiculo" EntityType="Self.Vehiculo" />
+          <AssociationSet Name="FK_Servicio_Cliente" Association="Self.FK_Servicio_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehiculo_Cliente" Association="Self.FK_Vehiculo_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mecanico_Vehiculo" Association="Self.FK_Mecanico_Vehiculo">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="Mecanico" EntitySet="Mecanico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_Mecanico" Association="Self.FK_Servicio_Mecanico">
+            <End Role="Mecanico" EntitySet="Mecanico" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Repuesto_Vehiculo" Association="Self.FK_Repuesto_Vehiculo">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="Repuesto" EntitySet="Repuesto" />
+          </AssociationSet>
+          <EntitySet Name="Factura" EntityType="CDAColombiaDBModel.Factura" />
+          <AssociationSet Name="FK_Factura_Cliente" Association="CDAColombiaDBModel.FK_Factura_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Factura_Mecanico" Association="CDAColombiaDBModel.FK_Factura_Mecanico">
+            <End Role="Mecanico" EntitySet="Mecanico" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Factura_Repuesto" Association="CDAColombiaDBModel.FK_Factura_Repuesto">
+            <End Role="Repuesto" EntitySet="Repuesto" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="IDFACTURA" />
+          </Key>
+          <Property Name="IDFACTURA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NUMERO_FACTURA" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="IVA" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="IDCLIENTE" Type="Int32" Nullable="false" />
+          <Property Name="IDMECANICO" Type="Int32" Nullable="false" />
+          <Property Name="IDREPUESTO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="CDAColombiaDBModel.FK_Factura_Cliente" FromRole="Factura" ToRole="Cliente" />
+          <NavigationProperty Name="Mecanico" Relationship="CDAColombiaDBModel.FK_Factura_Mecanico" FromRole="Factura" ToRole="Mecanico" />
+          <NavigationProperty Name="Repuesto" Relationship="CDAColombiaDBModel.FK_Factura_Repuesto" FromRole="Factura" ToRole="Repuesto" />
+        </EntityType>
+        <Association Name="FK_Factura_Cliente">
+          <End Type="CDAColombiaDBModel.Cliente" Role="Cliente" Multiplicity="1" />
+          <End Type="CDAColombiaDBModel.Factura" Role="Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="IDCLIENTE" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="IDCLIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Factura_Mecanico">
+          <End Type="CDAColombiaDBModel.Mecanico" Role="Mecanico" Multiplicity="1" />
+          <End Type="CDAColombiaDBModel.Factura" Role="Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mecanico">
+              <PropertyRef Name="IDMECANICO" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="IDMECANICO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Factura_Repuesto">
+          <End Type="CDAColombiaDBModel.Repuesto" Role="Repuesto" Multiplicity="1" />
+          <End Type="CDAColombiaDBModel.Factura" Role="Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Repuesto">
+              <PropertyRef Name="IDREPUESTO" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="IDREPUESTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CDAColombiaDBModelStoreContainer" CdmEntityContainer="CDAColombiaDBEntities">
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="CDAColombiaDBModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="IDCLIENTE" ColumnName="IDCLIENTE" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="APELLIDO" ColumnName="APELLIDO" />
+                <ScalarProperty Name="CEDULA" ColumnName="CEDULA" />
+                <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+                <ScalarProperty Name="CIUDAD" ColumnName="CIUDAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mecanico">
+            <EntityTypeMapping TypeName="CDAColombiaDBModel.Mecanico">
+              <MappingFragment StoreEntitySet="Mecanico">
+                <ScalarProperty Name="IDMECANICO" ColumnName="IDMECANICO" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="APELLIDO" ColumnName="APELLIDO" />
+                <ScalarProperty Name="EVALUACION_DAÑOS" ColumnName="EVALUACION_DAÑOS" />
+                <ScalarProperty Name="TIEMPO_REPARACION" ColumnName="TIEMPO_REPARACION" />
+                <ScalarProperty Name="MANO_DE_OBRA" ColumnName="MANO_DE_OBRA" />
+                <ScalarProperty Name="IDVEHICULO" ColumnName="IDVEHICULO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Repuesto">
+            <EntityTypeMapping TypeName="CDAColombiaDBModel.Repuesto">
+              <MappingFragment StoreEntitySet="Repuesto">
+                <ScalarProperty Name="IDREPUESTO" ColumnName="IDREPUESTO" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+                <ScalarProperty Name="FECHA_ENTREGA" ColumnName="FECHA_ENTREGA" />
+                <ScalarProperty Name="IDVEHICULO" ColumnName="IDVEHICULO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Servicio">
+            <EntityTypeMapping TypeName="CDAColombiaDBModel.Servicio">
+              <MappingFragment StoreEntitySet="Servicio">
+                <ScalarProperty Name="IDSERVICIO" ColumnName="IDSERVICIO" />
+                <ScalarProperty Name="FECHA_CITA" ColumnName="FECHA_CITA" />
+                <ScalarProperty Name="FOTO" ColumnName="FOTO" />
+                <ScalarProperty Name="IDCLIENTE" ColumnName="IDCLIENTE" />
+                <ScalarProperty Name="IDMECANICO" ColumnName="IDMECANICO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CDAColombiaDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehiculo">
+            <EntityTypeMapping TypeName="CDAColombiaDBModel.Vehiculo">
+              <MappingFragment StoreEntitySet="Vehiculo">
+                <ScalarProperty Name="IDVEHICULO" ColumnName="IDVEHICULO" />
+                <ScalarProperty Name="MODELO" ColumnName="MODELO" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="AÑO" ColumnName="AÑO" />
+                <ScalarProperty Name="PLACA" ColumnName="PLACA" />
+                <ScalarProperty Name="IDCLIENTE" ColumnName="IDCLIENTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Factura">
+            <EntityTypeMapping TypeName="CDAColombiaDBModel.Factura">
+              <MappingFragment StoreEntitySet="Factura">
+                <ScalarProperty Name="IDREPUESTO" ColumnName="IDREPUESTO" />
+                <ScalarProperty Name="IDMECANICO" ColumnName="IDMECANICO" />
+                <ScalarProperty Name="IDCLIENTE" ColumnName="IDCLIENTE" />
+                <ScalarProperty Name="IVA" ColumnName="IVA" />
+                <ScalarProperty Name="NUMERO_FACTURA" ColumnName="NUMERO_FACTURA" />
+                <ScalarProperty Name="IDFACTURA" ColumnName="IDFACTURA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
